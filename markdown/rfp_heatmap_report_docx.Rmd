@@ -1,0 +1,229 @@
+---
+title: "RFP heatmap report"
+author: "Hilaire et al. (2022)"
+output:
+  word_document:
+    toc: yes
+    toc_depth: '2'
+    fig_width: 12
+    fig_height: 9
+---
+
+```{r user_section, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+u_dr       <- 0.05
+u_horizon  <- 2050
+u_scenario <- "Net Zero 2050"
+u_sum_type <- "OVERALL"
+u_models   <- c("GCAM5.3_NGFS", "MESSAGEix-GLOBIOM 1.1", "REMIND-MAgPIE 2.1-4.2") 
+u_sectors_energysupply  <- rev(c("Energy Supply|Production|Oil", "Energy Supply|Production|Gas", 
+                                 "Energy Supply|Production|Coal",  
+                                 "Energy Supply|Production|Biomass"))
+
+
+u_sectors_electricutilities  <- rev(c("Energy Supply|Electric Utilities|Coal", 
+                                 "Energy Supply|Electric Utilities|Gas", "Energy Supply|Electric Utilities|Nuclear", 
+                                 "Energy Supply|Electric Utilities|Biomass", 
+                                 "Energy Supply|Electric Utilities|Non-Biomass Renewables", 
+                                 "Energy Supply|Electric Utilities|Non-Biomass Renewables|Solar PV", 
+                                 "Energy Supply|Electric Utilities|Non-Biomass Renewables|Wind", 
+                                 "Energy Supply|Electric Utilities|Non-Biomass Renewables|Hydro"))
+                                 
+u_sectors_liquidsplants  <- rev(c("Energy Supply|Refineries|Oil", "Energy Supply|Fischer-Tropsch Process|Biomass"))
+
+u_sectors_h2plants  <- rev(c("Energy Supply|Hydrogen Plants|Coal", "Energy Supply|Hydrogen Plants|Gas", 
+                                 "Energy Supply|Hydrogen Plants|Biomass", "Energy Supply|Hydrogen Plants|Electricity"))
+
+u_sectors_energydemand  <- rev(c("End-Use|Residential and Commercial", "End-Use|Industry", 
+                                 "End-Use|Industry|Cement", "End-Use|Industry|Chemicals", 
+                                 "End-Use|Industry|Steel", "End-Use|Transportation"))
+
+
+```
+
+
+```{r init, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+# Load libraries
+library(tidyverse)
+library(ggpubr)
+library(PTXQC)
+
+# Load rfp functions
+source("../functions/rfp.R")
+
+# Load plotting functions
+source("../functions/plotting_functions.R")
+
+# Load computed RFPs
+load("../data/data_rfp_step2_20220804.RData")
+```
+
+This report is generated automatically from the R-Markdown file rfp_heatmap_report_doc_final.Rmd.
+
+G is for GCAM, MG for MESSAGEix-GLOBIOM, RM for REMIND-MAgPIE
+
+# World
+```{r}
+v_region <- "World"
+```
+
+## Primary energy production
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_world_byModel_forReport(data_plot_diff_rel %>% filter(region == v_region, scenario == u_scenario), u_sectors_energysupply, u_models, SUM=u_sum_type)
+```
+
+## Electric utilities
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_world_byModel_forReport(data_plot_diff_rel %>% filter(region == v_region, scenario == u_scenario), u_sectors_electricutilities, u_models, SUM=u_sum_type)
+```
+
+## Liquid fuels plants
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_world_byModel_forReport(data_plot_diff_rel %>% filter(region == v_region, scenario == u_scenario), u_sectors_liquidsplants, u_models, SUM=u_sum_type)
+```
+
+## Hydrogen plants
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_world_byModel_forReport(data_plot_diff_rel %>% filter(region == v_region, scenario == u_scenario), u_sectors_h2plants, u_models, SUM=u_sum_type)
+```
+
+## Energy demand
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_world_diff_abs_byModel_forReport(data_plot_diff_abs %>% filter(region == v_region, scenario == u_scenario), u_sectors_energydemand, u_models, SUM=u_sum_type)
+
+```
+
+
+# China
+```{r}
+v_regionall <- c("GCAM5.3_NGFS|China", 
+              "MESSAGEix-GLOBIOM 1.1|R11_CPA", 
+              "REMIND-MAgPIE 2.1-4.2|CHA")
+```
+
+## Primary energy supply
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_region_byModel_forReport(data_plot_diff_rel %>% filter(region %in% v_regionall, scenario == u_scenario), u_sectors_energysupply, u_models, v_regionall, SUM=u_sum_type)
+```
+
+## Electric utilities
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_region_byModel_forReport(data_plot_diff_rel %>% filter(region %in% v_regionall, scenario == u_scenario), u_sectors_electricutilities, u_models, v_regionall, SUM=u_sum_type)
+```
+
+## Liquid fuels plants
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_region_byModel_forReport(data_plot_diff_rel %>% filter(region %in% v_regionall, scenario == u_scenario), u_sectors_liquidsplants, u_models, v_regionall, SUM=u_sum_type)
+```
+
+## Hydrogen plants
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_region_byModel_forReport(data_plot_diff_rel %>% filter(region %in% v_regionall, scenario == u_scenario), u_sectors_h2plants, u_models, v_regionall, SUM=u_sum_type)
+```
+
+## Energy demand
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_region_diff_abs_byModel_forReport(data_plot_diff_abs %>% filter(region %in% v_regionall, scenario == u_scenario), u_sectors_energydemand, u_models, v_regionall, SUM=u_sum_type)
+
+```
+
+
+# EU
+```{r}
+v_regionall <- c("GCAM5.3_NGFS|EU-12", 
+              "MESSAGEix-GLOBIOM 1.1|R11_WEU", 
+              "REMIND-MAgPIE 2.1-4.2|EUR")
+```
+
+## Primary energy supply
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_region_byModel_forReport(data_plot_diff_rel %>% filter(region %in% v_regionall, scenario == u_scenario), u_sectors_energysupply, u_models, v_regionall, SUM=u_sum_type)
+```
+
+## Electric utilities
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_region_byModel_forReport(data_plot_diff_rel %>% filter(region %in% v_regionall, scenario == u_scenario), u_sectors_electricutilities, u_models, v_regionall, SUM=u_sum_type)
+```
+
+## Liquid fuels plants
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_region_byModel_forReport(data_plot_diff_rel %>% filter(region %in% v_regionall, scenario == u_scenario), u_sectors_liquidsplants, u_models, v_regionall, SUM=u_sum_type)
+```
+
+## Hydrogen plants
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_region_byModel_forReport(data_plot_diff_rel %>% filter(region %in% v_regionall, scenario == u_scenario), u_sectors_h2plants, u_models, v_regionall, SUM=u_sum_type)
+```
+
+## Energy demand
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_region_diff_abs_byModel_forReport(data_plot_diff_abs %>% filter(region %in% v_regionall, scenario == u_scenario), u_sectors_energydemand, u_models, v_regionall, SUM=u_sum_type)
+
+```
+
+
+# India
+```{r}
+v_regionall <- c("GCAM5.3_NGFS|India", 
+              "MESSAGEix-GLOBIOM 1.1|R11_SAS", 
+              "REMIND-MAgPIE 2.1-4.2|IND")
+```
+
+## Primary energy supply
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_region_byModel_forReport(data_plot_diff_rel %>% filter(region %in% v_regionall, scenario == u_scenario), u_sectors_energysupply, u_models, v_regionall, SUM=u_sum_type)
+```
+
+## Electric utilities
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_region_byModel_forReport(data_plot_diff_rel %>% filter(region %in% v_regionall, scenario == u_scenario), u_sectors_electricutilities, u_models, v_regionall, SUM=u_sum_type)
+```
+
+## Liquid fuels plants
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_region_byModel_forReport(data_plot_diff_rel %>% filter(region %in% v_regionall, scenario == u_scenario), u_sectors_liquidsplants, u_models, v_regionall, SUM=u_sum_type)
+```
+
+## Hydrogen plants
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_region_byModel_forReport(data_plot_diff_rel %>% filter(region %in% v_regionall, scenario == u_scenario), u_sectors_h2plants, u_models, v_regionall, SUM=u_sum_type)
+```
+
+## Energy demand
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_region_diff_abs_byModel_forReport(data_plot_diff_abs %>% filter(region %in% v_regionall, scenario == u_scenario), u_sectors_energydemand, u_models, v_regionall, SUM=u_sum_type)
+
+```
+
+
+# USA
+```{r}
+v_regionall <- c("GCAM5.3_NGFS|USA", 
+              "MESSAGEix-GLOBIOM 1.1|R11_NAM", 
+              "REMIND-MAgPIE 2.1-4.2|USA")
+```
+
+## Primary energy supply
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_region_byModel_forReport(data_plot_diff_rel %>% filter(region %in% v_regionall, scenario == u_scenario), u_sectors_energysupply, u_models, v_regionall, SUM=u_sum_type)
+```
+
+## Electric utilities
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_region_byModel_forReport(data_plot_diff_rel %>% filter(region %in% v_regionall, scenario == u_scenario), u_sectors_electricutilities, u_models, v_regionall, SUM=u_sum_type)
+```
+
+## Liquid fuels plants
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_region_byModel_forReport(data_plot_diff_rel %>% filter(region %in% v_regionall, scenario == u_scenario), u_sectors_liquidsplants, u_models, v_regionall, SUM=u_sum_type)
+```
+
+## Hydrogen plants
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_region_byModel_forReport(data_plot_diff_rel %>% filter(region %in% v_regionall, scenario == u_scenario), u_sectors_h2plants, u_models, v_regionall, SUM=u_sum_type)
+```
+
+## Energy demand
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+draw_rfp_heatmap_region_diff_abs_byModel_forReport(data_plot_diff_abs %>% filter(region %in% v_regionall, scenario == u_scenario), u_sectors_energydemand, u_models, v_regionall, SUM=u_sum_type)
+
+```

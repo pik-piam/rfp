@@ -1,0 +1,1184 @@
+---
+title: "RFP pathways report"
+author: "Hilaire et al. (2022)"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    toc_depth: '2'
+    df_print: paged
+    fig_width: 12
+    fig_height: 9
+---
+
+```{r user_section, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+u_dr       <- 0.05
+u_horizon  <- 2100
+u_scenario <- "Net Zero 2050"
+u_sum_type <- "OVERALL"
+
+```
+
+
+```{r init, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+# Load libraries
+library(tidyverse)
+library(ggpubr)
+library(PTXQC)
+
+# Load plotting functions
+source("../functions/plotting_functions.R")
+
+# Load computed RFPs
+#load("../data/data_rfp_step2.RData")
+load("../data/data_rfp_step2_20220804.RData")
+```
+
+
+# World
+```{r}
+v_region <- "World"
+```
+
+## Primary energy production
+```{r}
+section_variables <- c("Energy Supply|Production|Oil", "Energy Supply|Production|Gas", "Energy Supply|Production|Coal",   "Energy Supply|Production|Biomass")
+```
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGEix-GLOBIOM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+
+## Electric utilities
+```{r}
+section_variables <- c("Energy Supply|Electric Utilities|Coal", "Energy Supply|Electric Utilities|Gas", "Energy Supply|Electric Utilities|Nuclear", "Energy Supply|Electric Utilities|Biomass", "Energy Supply|Electric Utilities|Non-Biomass Renewables")
+```
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+plots <- list()
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGE", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+## Liquids fuels
+```{r}
+section_variables <- c("Energy Supply|Refineries|Oil", "Energy Supply|Fischer-Tropsch Process|Biomass")
+```
+
+
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+plots <- list()
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGE", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+
+## Hydrogen plants
+```{r}
+section_variables <- c("Energy Supply|Hydrogen Plants|Coal", "Energy Supply|Hydrogen Plants|Gas", "Energy Supply|Hydrogen Plants|Biomass", "Energy Supply|Hydrogen Plants|Electricity")
+```
+
+
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+plots <- list()
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGE", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+
+## End-use energy sectors
+```{r}
+section_variables <- c("End-Use|Residential and Commercial", "End-Use|Industry", "End-Use|Industry|Cement", "End-Use|Industry|Chemicals", "End-Use|Industry|Steel", "End-Use|Transportation")
+```
+
+
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+plots <- list()
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGE", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+
+
+
+# China
+```{r}
+v_regionall <- c("GCAM5.3_NGFS|China", 
+              "MESSAGEix-GLOBIOM 1.1|R11_CPA", 
+              "REMIND-MAgPIE 2.1-4.2|CHA")
+```
+
+## Primary energy production
+```{r}
+section_variables <- c("Energy Supply|Production|Oil", "Energy Supply|Production|Gas", "Energy Supply|Production|Coal",   "Energy Supply|Production|Biomass")
+```
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("GCAM", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("MESSAGE", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGEix-GLOBIOM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("REMIND", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+
+## Electric utilities
+```{r}
+section_variables <- c("Energy Supply|Electric Utilities|Coal", "Energy Supply|Electric Utilities|Gas", "Energy Supply|Electric Utilities|Nuclear", "Energy Supply|Electric Utilities|Biomass", "Energy Supply|Electric Utilities|Non-Biomass Renewables")
+```
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("GCAM", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("MESSAGE", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGE", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("REMIND", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+## Liquids fuels
+```{r}
+section_variables <- c("Energy Supply|Refineries|Oil", "Energy Supply|Fischer-Tropsch Process|Biomass")
+```
+
+
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("GCAM", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("MESSAGE", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGE", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("REMIND", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+
+## Hydrogen plants
+```{r}
+section_variables <- c("Energy Supply|Hydrogen Plants|Coal", "Energy Supply|Hydrogen Plants|Gas", "Energy Supply|Hydrogen Plants|Biomass", "Energy Supply|Hydrogen Plants|Electricity")
+```
+
+
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("GCAM", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("MESSAGE", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGE", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("REMIND", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+
+## End-use energy sectors
+```{r}
+section_variables <- c("End-Use|Residential and Commercial", "End-Use|Industry", "End-Use|Industry|Cement", "End-Use|Industry|Chemicals", "End-Use|Industry|Steel", "End-Use|Transportation")
+```
+
+
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("GCAM", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("MESSAGE", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGE", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("REMIND", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+
+
+# EU
+```{r}
+v_regionall <- c("GCAM5.3_NGFS|EU-12", 
+              "MESSAGEix-GLOBIOM 1.1|R11_WEU", 
+              "REMIND-MAgPIE 2.1-4.2|EUR")
+```
+
+## Primary energy production
+```{r}
+section_variables <- c("Energy Supply|Production|Oil", "Energy Supply|Production|Gas", "Energy Supply|Production|Coal",   "Energy Supply|Production|Biomass")
+```
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("GCAM", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("MESSAGE", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGEix-GLOBIOM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("REMIND", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+
+## Electric utilities
+```{r}
+section_variables <- c("Energy Supply|Electric Utilities|Coal", "Energy Supply|Electric Utilities|Gas", "Energy Supply|Electric Utilities|Nuclear", "Energy Supply|Electric Utilities|Biomass", "Energy Supply|Electric Utilities|Non-Biomass Renewables")
+```
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("GCAM", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("MESSAGE", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGE", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("REMIND", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+## Liquids fuels
+```{r}
+section_variables <- c("Energy Supply|Refineries|Oil", "Energy Supply|Fischer-Tropsch Process|Biomass")
+```
+
+
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("GCAM", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("MESSAGE", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGE", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("REMIND", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+
+## Hydrogen plants
+```{r}
+section_variables <- c("Energy Supply|Hydrogen Plants|Coal", "Energy Supply|Hydrogen Plants|Gas", "Energy Supply|Hydrogen Plants|Biomass", "Energy Supply|Hydrogen Plants|Electricity")
+```
+
+
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("GCAM", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("MESSAGE", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGE", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("REMIND", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+
+## End-use energy sectors
+```{r}
+section_variables <- c("End-Use|Residential and Commercial", "End-Use|Industry", "End-Use|Industry|Cement", "End-Use|Industry|Chemicals", "End-Use|Industry|Steel", "End-Use|Transportation")
+```
+
+
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("GCAM", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("MESSAGE", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGE", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("REMIND", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+# India
+```{r}
+v_regionall <- c("GCAM5.3_NGFS|India", 
+              "MESSAGEix-GLOBIOM 1.1|R11_SAS", 
+              "REMIND-MAgPIE 2.1-4.2|IND")
+```
+
+## Primary energy production
+```{r}
+section_variables <- c("Energy Supply|Production|Oil", "Energy Supply|Production|Gas", "Energy Supply|Production|Coal",   "Energy Supply|Production|Biomass")
+```
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("GCAM", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("MESSAGE", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGEix-GLOBIOM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("REMIND", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+
+## Electric utilities
+```{r}
+section_variables <- c("Energy Supply|Electric Utilities|Coal", "Energy Supply|Electric Utilities|Gas", "Energy Supply|Electric Utilities|Nuclear", "Energy Supply|Electric Utilities|Biomass", "Energy Supply|Electric Utilities|Non-Biomass Renewables")
+```
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("GCAM", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("MESSAGE", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGE", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("REMIND", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+## Liquids fuels
+```{r}
+section_variables <- c("Energy Supply|Refineries|Oil", "Energy Supply|Fischer-Tropsch Process|Biomass")
+```
+
+
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("GCAM", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("MESSAGE", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGE", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("REMIND", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+
+## Hydrogen plants
+```{r}
+section_variables <- c("Energy Supply|Hydrogen Plants|Coal", "Energy Supply|Hydrogen Plants|Gas", "Energy Supply|Hydrogen Plants|Biomass", "Energy Supply|Hydrogen Plants|Electricity")
+```
+
+
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("GCAM", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("MESSAGE", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGE", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("REMIND", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+
+## End-use energy sectors
+```{r}
+section_variables <- c("End-Use|Residential and Commercial", "End-Use|Industry", "End-Use|Industry|Cement", "End-Use|Industry|Chemicals", "End-Use|Industry|Steel", "End-Use|Transportation")
+```
+
+
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("GCAM", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("MESSAGE", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGE", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("REMIND", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+
+# USA
+```{r}
+v_regionall <- c("GCAM5.3_NGFS|USA", 
+              "MESSAGEix-GLOBIOM 1.1|R11_NAM", 
+              "REMIND-MAgPIE 2.1-4.2|USA")
+```
+
+## Primary energy production
+```{r}
+section_variables <- c("Energy Supply|Production|Oil", "Energy Supply|Production|Gas", "Energy Supply|Production|Coal",   "Energy Supply|Production|Biomass")
+```
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("GCAM", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("MESSAGE", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGEix-GLOBIOM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("REMIND", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+
+## Electric utilities
+```{r}
+section_variables <- c("Energy Supply|Electric Utilities|Coal", "Energy Supply|Electric Utilities|Gas", "Energy Supply|Electric Utilities|Nuclear", "Energy Supply|Electric Utilities|Biomass", "Energy Supply|Electric Utilities|Non-Biomass Renewables")
+```
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("GCAM", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("MESSAGE", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGE", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("REMIND", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+## Liquids fuels
+```{r}
+section_variables <- c("Energy Supply|Refineries|Oil", "Energy Supply|Fischer-Tropsch Process|Biomass")
+```
+
+
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("GCAM", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("MESSAGE", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGE", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("REMIND", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+
+## Hydrogen plants
+```{r}
+section_variables <- c("Energy Supply|Hydrogen Plants|Coal", "Energy Supply|Hydrogen Plants|Gas", "Energy Supply|Hydrogen Plants|Biomass", "Energy Supply|Hydrogen Plants|Electricity")
+```
+
+
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("GCAM", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("MESSAGE", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGE", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("REMIND", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+
+## End-use energy sectors
+```{r}
+section_variables <- c("End-Use|Residential and Commercial", "End-Use|Industry", "End-Use|Industry|Cement", "End-Use|Industry|Chemicals", "End-Use|Industry|Steel", "End-Use|Transportation")
+```
+
+
+### GCAM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("GCAM", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("GCAM", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### MESSAGEix-GLOBIOM
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("MESSAGE", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("MESSAGE", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```
+
+### REMIND-MAgPIE
+```{r message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+v_region <- grep("REMIND", v_regionall, value=TRUE)
+plots <- list()
+for (ksec in section_variables) {
+  plots[[ksec]] <- plot_rfp_pathways(data_rfp_abs_diff %>% filter(grepl("REMIND", model)), 
+                                     ksec, 
+                                     u_scenario, v_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE) + 
+    ggtitle(substr(ksec, nchar(LCSn(section_variables))+1, nchar(ksec)))
+}
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
+```

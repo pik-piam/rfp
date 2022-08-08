@@ -1,0 +1,591 @@
+---
+title: "RFP variable availability"
+author: "Hilaire et al. (2022)"
+date: "04-08-2022"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load_libraries, error=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+library(tidyverse)
+library(rlang)
+library(lazyeval)
+library(kableExtra)
+```
+
+```{r load_functions, error=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+format_table_summary <- function(i_table, i_sector_escaped, i_check, i_equations) {
+  
+  out <- i_table
+  
+  for (kvar in grep(i_sector_escaped, names(i_check$`equation information`), value=T)) {
+    # Get equation and variable information
+    eq_info <- i_check$`equation information`[[kvar]]
+    eq_vars <- names(i_check$`equation information`[[kvar]])
+    
+    # Get original equation definition
+    v_rfp      <- i_equations$RFP[which(gsub("`", "", i_equations$lhs) == kvar)]
+    
+    v_equation <- i_equations$rhs[which(gsub("`", "", i_equations$lhs) == kvar)]
+    
+    v_subsector <- gsub(paste0("Diagnostics\\|RFP\\|",v_rfp,"\\|"), "", kvar)
+    
+    # v_equation <- gsub("*", "&#215;", v_equation, fixed = TRUE) %>% 
+    #   gsub("+", "&#43;",   ., fixed = TRUE) #%>% 
+    #   #gsub("-", "&#8722;", ., fixed = TRUE) %>% 
+    #   #gsub("/", "&#247;",  ., fixed = TRUE) 
+    
+    # Loop over equation variables and format text equation
+    # TODO: split equation into elements, apply gsub and recompose
+    for (keqvar in eq_vars) {
+      #v_eqvar_escaped <- gsub("\\|", "\\\\|", keqvar)
+      if (eq_info[[keqvar]]$status == "Fully available") {
+        v_equation <- gsub(paste0("`", keqvar, "`"), paste0("<span style='color: blue'>`", keqvar, "`</span></br>"), v_equation, fixed = TRUE)
+      }
+      if (eq_info[[keqvar]]$status == "Partially available") {
+        v_equation <- gsub(paste0("`", keqvar, "`"), paste0("<span style='color: orange'>`", keqvar, "`</span></br>"), v_equation, fixed = TRUE)
+      }
+      if (eq_info[[keqvar]]$status == "Unavailable") {
+        v_equation <- gsub(paste0("`", keqvar, "`"), paste0("<span style='color: red'>`", keqvar, "`</span></br>"), v_equation, fixed = TRUE)
+      }
+    }
+    
+    # v_equation <- gsub("_", "\\\\_", v_equation) %>%
+    #               gsub("+", "+\n", ., fixed = TRUE) %>%
+    #               #gsub("-", "-\n", ., fixed = TRUE) #%>%
+    #               gsub("*", "*\n", ., fixed = TRUE) #%>%
+    #               #gsub("/", "/\n", ., fixed = TRUE) #%>%
+    #               #gsub("`", "", .)
+    
+    v_equation <- gsub("*", "&times;", v_equation, fixed = TRUE)
+    v_equation <- gsub("+", "&#43;",   v_equation, fixed = TRUE) #%>%
+    
+    #v_equation <- paste("<div>", v_equation, "</div>")
+    
+    # Insert formatted equation in summary table
+    out[which(out$Sector == v_subsector), v_rfp] <- v_equation
+  }
+  return(out)
+}
+```
+
+```{r load_data, error=FALSE, message=FALSE, warning=FALSE, include=FALSE, cache=FALSE}
+source("../functions/rfp.R")
+source("../functions/tool_functions.R")
+source("../functions/check_data_availability.R")
+#load("../data/ngfs/load/data_ngfs2.RData")
+#load("../data/data_ngfs2_20220416.RData")
+load("../data/data_ngfs2_20220804.RData")
+
+scen_baseline <- c(
+  "Current Policies"                            = NA,
+  "Nationally Determined Contributions (NDCs)"  = "Current Policies",
+  "Below 2°C"                                   = "Current Policies",
+  "Net Zero 2050"                               = "Current Policies",
+  "Delayed transition"                          = "Current Policies",
+  "Divergent Net Zero"                          = "Current Policies"
+)
+
+equations <- readxl::read_excel("../data/rfp_definitions.xlsx", sheet = "equations")
+
+mapping_region_ngfs <- read.csv2("../data/ngfs/regional_mapping_ngfs.csv")
+
+assumptions <- list(
+  "Direct emissions cost" = list(
+    "Unit conversion" = inline.data.frame(c(
+      "EJ to GJ conversion; t to Mt; $BN to $; 2015 to 2010 USD; 2007 to 2010 USD; 2005 to 2010 USD; kt to t; kt to Mt; C to CO2",
+      "1e9;                 1e6;     1e9;      0.920;            1.052;            1.117;            1e3;     1e-3;     3.666667")),
+    "CO2 emission factors" = inline.data.frame(c(
+      "coal_mining; oil_production; gas_production; coal_noccs; coal_ccs; oil_noccs; oil_ccs; gas_noccs; gas_ccs",
+      "10.12327;    10.55672;       12.15683;       26.1;       2.6;      18.4;      1.8;     15.3;      1.5"))
+  ),
+  "Indirect cost" = list(
+    "Unit conversion" = inline.data.frame(c(
+      "EJ to GJ conversion; t to Mt; $BN to $; 2015 to 2010 USD; 2007 to 2010 USD; 2005 to 2010 USD; kt to t; C to CO2",
+      "1e9;                 1e6;     1e9;      0.920;            1.052;            1.117;            1e3;     3.666667"))
+  ),
+  "Low-carbon capital expenditure" = list(
+    "Unit conversion" = inline.data.frame(c(
+      "EJ to GJ conversion; t to Mt; $BN to $; 2015 to 2010 USD; 2007 to 2010 USD; 2005 to 2010 USD; kt to t; C to CO2",
+      "1e9;                 1e6;     1e9;      0.920;            1.052;            1.117;            1e3;     3.666667")),
+    "Share of low-carbon energy efficiency investments for the three end-use sectors" = data.frame(
+      region                      = c("CHN", "EUR", "IND", "R5ASIA", "R5LAM", "R5MAF", "R5OECD90+EU", "R5REF", "USA", "World"),
+      ee_inv_ratio_industry       = c(0.30,  0.20,  0.30,   0.30,    0.30,    0.30,     0.20,         0.30,     0.20,  0.30),
+      ee_inv_ratio_buildings      = c(0.35,  0.40,  0.35,   0.35,    0.35,    0.35,     0.40,         0.35,     0.40,  0.35),
+      ee_inv_ratio_transportation = c(0.35,  0.40,  0.35,   0.35,    0.35,    0.35,     0.40,         0.35,     0.40,  0.35))
+  ),
+  "Revenue" = list(       
+    "Unit conversion" = inline.data.frame(c(
+      "EJ to GJ conversion; t to Mt; $BN to $; 2015 to 2010 USD; 2007 to 2010 USD; 2005 to 2010 USD; kt to t; C to CO2",
+      "1e9;                 1e6;     1e9;      0.920;            1.052;            1.117;            1e3;     3.666667"))
+  )
+)
+```
+
+```{r check_data_availability_summary, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE, include=FALSE, cache=FALSE}
+
+checks <- check_data_availability(data_ngfs2, equations, assumptions)
+
+```
+
+```{r compute_missing_data, error=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+missing_data <- lapply(checks,
+                       function(x) {
+                         lapply(x$`equation information`, 
+                            function(y) {
+                              lapply(y, 
+                                function(z) {
+                                  z$`missing data`
+                                }
+                              ) %>% 
+                                do.call("rbind", .)
+                            }
+                         ) %>% do.call("rbind", .) 
+                       }) %>% do.call("rbind", .) 
+rownames(missing_data) <- NULL
+missing_data <- missing_data %>% 
+  unite("all", model, scenario, region, variable, period, remove = FALSE) %>% 
+  filter(!duplicated(all)) %>% 
+  select(-all)
+```
+
+# GCAM
+```{r include=FALSE}
+p_model <- "GCAM5.3_NGFS"
+
+data_avail_summary <- checks[[p_model]]$summary %>% 
+  rename(variable = rfp) %>% 
+  mutate(rfp = sapply(strsplit(gsub("Diagnostics\\|RFP\\|", "", variable), "\\|"), function(x) x[1])) %>% 
+  mutate(tmp = paste0("Diagnostics\\|RFP\\|", rfp, "\\|")) %>% 
+  mutate(sector = stringr::str_replace_all(variable, tmp, "")) %>% 
+  select(rfp, sector, computable) %>% 
+  pivot_wider(names_from = "rfp", values_from = "computable")
+
+v_colnames <- c("Sector", "Direct emissions cost", "Indirect cost", "Low-carbon capital expenditure", "Revenue")
+names(data_avail_summary) <- v_colnames
+```
+
+## Energy Supply
+### Production
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "Energy Supply|Production"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector)) %>% 
+  kable(escape=FALSE)
+```
+
+### Electric Utilities
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "Energy Supply|Electric Utilities"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector)) %>% 
+  kable(escape=FALSE)
+```
+
+### Refineries
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "Energy Supply|Refineries"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector)) %>% 
+  kable(escape=FALSE)
+```
+
+### Fischer-Tropsch Process
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "Energy Supply|Fischer-Tropsch Process"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector)) %>% 
+  kable(escape=FALSE)
+```
+
+### Hydrogen Plants
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "Energy Supply|Hydrogen Plants"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector)) %>% 
+  kable(escape=FALSE)
+```
+
+
+
+## Energy Demand
+### Buildings
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "End-Use|Residential and Commercial"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector))  %>% 
+  kable(escape=FALSE)
+```
+
+
+### Industry
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "End-Use|Industry"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector)) %>% 
+  kable(escape=FALSE)
+```
+
+
+### Transport
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "End-Use|Transportation"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector))  %>% 
+  kable(escape=FALSE)
+```
+
+
+
+
+# MESSAGE
+```{r include=FALSE}
+p_model <- "MESSAGEix-GLOBIOM 1.1"
+
+data_avail_summary <- checks[[p_model]]$summary %>% 
+  rename(variable = rfp) %>% 
+  mutate(rfp = sapply(strsplit(gsub("Diagnostics\\|RFP\\|", "", variable), "\\|"), function(x) x[1])) %>% 
+  mutate(tmp = paste0("Diagnostics\\|RFP\\|", rfp, "\\|")) %>% 
+  mutate(sector = stringr::str_replace_all(variable, tmp, "")) %>% 
+  select(rfp, sector, computable) %>% 
+  pivot_wider(names_from = "rfp", values_from = "computable")
+
+v_colnames <- c("Sector", "Direct emissions cost", "Indirect cost", "Low-carbon capital expenditure", "Revenue")
+names(data_avail_summary) <- v_colnames
+```
+
+## Energy Supply
+### Production
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "Energy Supply|Production"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector)) %>% 
+  kable(escape=FALSE)
+```
+
+### Electric Utilities
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "Energy Supply|Electric Utilities"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector)) %>% 
+  kable(escape=FALSE)
+```
+
+
+### Refineries
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "Energy Supply|Refineries"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector)) %>% 
+  kable(escape=FALSE)
+```
+
+### Fischer-Tropsch Process
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "Energy Supply|Fischer-Tropsch Process"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector)) %>% 
+  kable(escape=FALSE)
+```
+
+### Hydrogen Plants
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "Energy Supply|Hydrogen Plants"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector)) %>% 
+  kable(escape=FALSE)
+```
+
+
+## Energy Demand
+### Buildings
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "End-Use|Residential and Commercial"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector))  %>% 
+  kable(escape=FALSE)
+```
+
+
+### Industry
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "End-Use|Industry"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector)) %>% 
+  kable(escape=FALSE)
+```
+
+
+### Transport
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "End-Use|Transportation"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector))  %>% 
+  kable(escape=FALSE)
+```
+
+
+
+
+# REMIND-MAgPIE
+```{r include=FALSE}
+p_model <- "REMIND-MAgPIE 2.1-4.2"
+
+data_avail_summary <- checks[[p_model]]$summary %>% 
+  rename(variable = rfp) %>% 
+  mutate(rfp = sapply(strsplit(gsub("Diagnostics\\|RFP\\|", "", variable), "\\|"), function(x) x[1])) %>% 
+  mutate(tmp = paste0("Diagnostics\\|RFP\\|", rfp, "\\|")) %>% 
+  mutate(sector = stringr::str_replace_all(variable, tmp, "")) %>% 
+  select(rfp, sector, computable) %>% 
+  pivot_wider(names_from = "rfp", values_from = "computable")
+
+v_colnames <- c("Sector", "Direct emissions cost", "Indirect cost", "Low-carbon capital expenditure", "Revenue")
+names(data_avail_summary) <- v_colnames
+```
+
+## Energy Supply
+### Production
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "Energy Supply|Production"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector)) %>% 
+  kable(escape=FALSE)
+```
+
+### Electric Utilities
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "Energy Supply|Electric Utilities"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector)) %>% 
+  kable(escape=FALSE)
+```
+
+
+### Refineries
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "Energy Supply|Refineries"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector)) %>% 
+  kable(escape=FALSE)
+```
+
+### Fischer-Tropsch Process
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "Energy Supply|Fischer-Tropsch Process"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector)) %>% 
+  kable(escape=FALSE)
+```
+
+### Hydrogen Plants
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "Energy Supply|Hydrogen Plants"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector)) %>% 
+  kable(escape=FALSE)
+```
+
+
+
+## Energy Demand
+### Buildings
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "End-Use|Residential and Commercial"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector))  %>% 
+  kable(escape=FALSE)
+```
+
+
+### Industry
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "End-Use|Industry"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector)) %>% 
+  kable(escape=FALSE)
+```
+
+
+### Transport
+```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+v_sector <- "End-Use|Transportation"
+v_sector_escaped <- gsub("\\|", "\\\\|", v_sector)
+
+table_summary <- data_avail_summary %>% 
+  filter(grepl(v_sector_escaped, Sector)) %>% 
+  format_table_summary(v_sector_escaped, checks[[p_model]], equations)
+
+table_summary %>% 
+  mutate(Sector = gsub(paste0(v_sector_escaped, "\\|"), "", Sector)) %>% 
+  mutate(Sector = ifelse(Sector == v_sector, "Total", Sector))  %>% 
+  kable(escape=FALSE)
+```
+
+
