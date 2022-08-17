@@ -241,7 +241,7 @@ data_ngfs2 <- bind_rows(
         "`Diagnostics|Investment|Energy Supply|Hydrogen|Electricity`" = "`Diagnostics|Investment|Energy Supply|Hydrogen|Renewable` * ((`Capacity Additions|Hydrogen|Electricity`*`Capital Cost|Hydrogen|Electricity`)/(`Capacity Additions|Hydrogen|Biomass|w/ CCS`*`Capital Cost|Hydrogen|Biomass|w/ CCS` + `Capacity Additions|Hydrogen|Biomass|w/o CCS`*`Capital Cost|Hydrogen|Biomass|w/o CCS` + `Capacity Additions|Hydrogen|Electricity`*`Capital Cost|Hydrogen|Electricity`))"
       )))
 
-rm("data_ngfs", "data_ngfs2_raw", "data_ngfs_remind_addon", "data_ngfs_remind_capaddH2_addon")
+rm("data_ngfs2_raw", "data_ngfs_remind_capaddH2_addon")
 gc()
 
 save(data_ngfs2, file="data/data_ngfs2.RData")

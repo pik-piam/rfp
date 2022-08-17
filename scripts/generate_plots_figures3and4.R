@@ -14,8 +14,6 @@ u_dr       <- 0.05
 u_region   <- "World"
 u_models   <- c("GCAM5.3_NGFS", "MESSAGEix-GLOBIOM 1.1", "REMIND-MAgPIE 2.1-4.2") 
 u_scenario <- "Net Zero 2050"
-u_sum_type_supply <- "TOTAL"
-u_sum_type_demand <- "OVERALL"
 #-------------------------------------------------------------
 
 u_sectors_energysupply  <- rev(c("Energy Supply|Production|Oil", "Energy Supply|Production|Gas", 
@@ -30,19 +28,20 @@ u_sectors_energysupply  <- rev(c("Energy Supply|Production|Oil", "Energy Supply|
 
 u_sectors_energydemand  <- rev(c("End-Use|Residential and Commercial", "End-Use|Industry", 
                                  "End-Use|Industry|Cement", "End-Use|Industry|Chemicals", 
-                                 "End-Use|Industry|Steel", "End-Use|Transportation"))
+                                 "End-Use|Industry|Steel", "End-Use|Industry|Other", 
+                                 "End-Use|Transportation"))
 
 
 #-- Energy Supply sectors ------------------------------------------------------
-draw_rfp_heatmap_world_byModel(data_plot_diff_rel %>% filter(region == u_region, scenario == u_scenario), u_sectors_energysupply, u_models, SUM=u_sum_type_supply)
+draw_rfp_heatmap_world_byModel(data_plot_diff_rel %>% filter(region == u_region, scenario == u_scenario), u_sectors_energysupply, u_models, SUM="TOTAL")
 
 svglite(file=paste0("output/figure3/rfp_heatmap_3models_EnergySupply_",u_scenario,"_", u_region, "_dr", paste(u_dr*100), "pct.svg"), width = 20, height = 16)
-draw_rfp_heatmap_world_byModel(data_plot_diff_rel %>% filter(region == u_region, scenario == u_scenario), u_sectors_energysupply, u_models, SUM=u_sum_type_supply)
+draw_rfp_heatmap_world_byModel(data_plot_diff_rel %>% filter(region == u_region, scenario == u_scenario), u_sectors_energysupply, u_models, SUM="TOTAL")
 dev.off()
 
 #-- Energy Demand sectors ------------------------------------------------------
-draw_rfp_heatmap_world_diff_abs_byModel(data_plot_diff_abs %>% filter(region == u_region, scenario == u_scenario), u_sectors_energydemand, u_models, SUM=u_sum_type_demand)
+draw_rfp_heatmap_world_diff_abs_byModel(data_plot_diff_abs %>% filter(region == u_region, scenario == u_scenario), u_sectors_energydemand, u_models, SUM="TOTAL")
 
 svglite(file=paste0("output/figure4/rfp_heatmap_3models_EnergyDemand_",u_scenario,"_", u_region, "_dr", paste(u_dr*100), "pct.svg"))
-draw_rfp_heatmap_world_diff_abs_byModel(data_plot_diff_abs %>% filter(region == u_region, scenario == u_scenario), u_sectors_energydemand, u_models, SUM=u_sum_type_demand)
+draw_rfp_heatmap_world_diff_abs_byModel(data_plot_diff_abs %>% filter(region == u_region, scenario == u_scenario), u_sectors_energydemand, u_models, SUM="TOTAL")
 dev.off()

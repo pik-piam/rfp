@@ -1,0 +1,84 @@
+region_new;region_rfp
+Asian countries except Japan;R5ASIA
+Countries from the Reforming Ecomonies of the Former Soviet Union;R5REF
+Countries of the Middle East and Africa;R5MAF
+European Union (28 member countries);EUR
+Federative Republic of Brazil;R5LAM
+GCAM5.3_NGFS|Africa_Eastern;R5MAF
+GCAM5.3_NGFS|Africa_Northern;R5MAF
+GCAM5.3_NGFS|Africa_Southern;R5MAF
+GCAM5.3_NGFS|Africa_Western;R5MAF
+GCAM5.3_NGFS|Argentina;R5LAM
+GCAM5.3_NGFS|Australia_NZ;R5OECD90+EU
+GCAM5.3_NGFS|Brazil;R5LAM
+GCAM5.3_NGFS|Canada;R5OECD90+EU
+GCAM5.3_NGFS|Central America and Caribbean;R5LAM
+GCAM5.3_NGFS|Central Asia;R5ASIA
+GCAM5.3_NGFS|China;CHN
+GCAM5.3_NGFS|Colombia;R5LAM
+GCAM5.3_NGFS|EU-12;EUR
+GCAM5.3_NGFS|EU-15;EUR
+GCAM5.3_NGFS|Europe_Eastern;R5REF
+GCAM5.3_NGFS|Europe_Non_EU;EUR
+GCAM5.3_NGFS|European Free Trade Association;EUR
+GCAM5.3_NGFS|India;IND
+GCAM5.3_NGFS|Indonesia;R5ASIA
+GCAM5.3_NGFS|Japan;R5OECD90+EU
+GCAM5.3_NGFS|Mexico;R5LAM
+GCAM5.3_NGFS|Middle East;R5MAF
+GCAM5.3_NGFS|Pakistan;R5ASIA
+GCAM5.3_NGFS|Russia;R5REF
+GCAM5.3_NGFS|South Africa;R5MAF
+GCAM5.3_NGFS|South America_Northern;R5LAM
+GCAM5.3_NGFS|South America_Southern;R5LAM
+GCAM5.3_NGFS|South Asia;R5ASIA
+GCAM5.3_NGFS|South Korea;R5ASIA
+GCAM5.3_NGFS|Southeast Asia;R5ASIA
+GCAM5.3_NGFS|Taiwan;R5ASIA
+GCAM5.3_NGFS|USA;USA
+Latin American countries;R5LAM
+OECD90 and EU (and EU candidate) countries;R5OECD90+EU
+People's Republic of China;CHN
+Republic of India;IND
+State of Japan;R5OECD90+EU
+United Mexican States;R5LAM
+United States of America;USA
+World;World
+MESSAGEix-GLOBIOM 1.0|Centrally Planned Asia and China;CHN
+MESSAGEix-GLOBIOM 1.0|Eastern Europe;R5REF
+MESSAGEix-GLOBIOM 1.0|Former Soviet Union;R5REF
+MESSAGEix-GLOBIOM 1.0|Latin America and the Caribbean;R5LAM
+MESSAGEix-GLOBIOM 1.0|Middle East and North Africa;R5MAF
+MESSAGEix-GLOBIOM 1.0|North America;USA
+MESSAGEix-GLOBIOM 1.0|Other Pacific Asia;R5OECD90+EU
+MESSAGEix-GLOBIOM 1.0|Pacific OECD;R5OECD90+EU
+MESSAGEix-GLOBIOM 1.0|South Asia;R5ASIA
+MESSAGEix-GLOBIOM 1.0|Sub-saharan Africa;R5MAF
+MESSAGEix-GLOBIOM 1.0|Western Europe;EUR
+Countries of Latin America and the Caribbean;R5LAM
+"Countries of South Asia; primarily India";R5ASIA
+Countries of Sub-Saharan Africa;R5MAF
+"Countries of centrally-planned Asia; primarily China";R5ASIA
+"Countries of the Middle East; Iran, Iraq, Israel, Saudi Arabia, Qatar, etc.";R5MAF
+Eastern and Western Europe (i.e., the EU28);EUR
+"North America; primarily the United States of America and Canada";R5OECD90+EU
+Other countries of Asia;R5ASIA
+Pacific OECD;R5OECD90+EU
+REMIND-MAgPIE 2.1-4.2|Canada, NZ, Australia;R5OECD90+EU
+REMIND-MAgPIE 2.1-4.2|China;CHN
+REMIND-MAgPIE 2.1-4.2|Countries from the Reforming Ecomonies of the Former Soviet Union;R5REF
+REMIND-MAgPIE 2.1-4.2|EU 28;EUR
+REMIND-MAgPIE 2.1-4.2|India;IND
+REMIND-MAgPIE 2.1-4.2|Japan;R5OECD90+EU
+REMIND-MAgPIE 2.1-4.2|Latin America and the Caribbean;R5LAM
+REMIND-MAgPIE 2.1-4.2|Middle East, North Africa, Central Asia;R5MAF
+REMIND-MAgPIE 2.1-4.2|Non-EU28 Europe;R5REF
+REMIND-MAgPIE 2.1-4.2|Sub-saharan Africa;R5MAF
+REMIND-MAgPIE 2.1-4.2|United States of America;USA
+REMIND-MAgPIE 2.1-4.2|other Asia;R5ASIA
+"Reforming Economies of Eastern Europe and the Former Soviet Union; primarily Russia";R5REF
+Rest of the World (R10);R5REF
+Russian Federation;R5REF
+Canada;R5OECD90+EU
+Republic of Korea (South Korea);R5ASIA
+Republic of South Africa;R5MAF

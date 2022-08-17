@@ -20,22 +20,22 @@ v_sectors_energydemand  <- rev(c("End-Use|Residential and Commercial", "End-Use|
 v_region   <- "World"
 
 #-- Energy Supply sectors ------------------------------------------------------
-draw_rfp_heatmap_world_byModel(data_plot_diff_rel %>% filter(region == v_region, scenario == v_scenario), v_sectors_energysupply, v_models, SUM=sum_type)
+draw_rfp_heatmap_world_byModel(data_plot_diff_rel %>% filter(region == v_region, scenario == v_scenario), v_sectors_energysupply, v_models, SUM="TOTAL")
 
-svglite(file=paste0("output/rfp_heatmap_3models_EnergySupply_",v_scenario,"_", v_region, "_dr", paste(dr*100), "pct.svg"))
-draw_rfp_heatmap_world_byModel(data_plot_diff_rel %>% filter(region == v_region, scenario == v_scenario), v_sectors_energysupply, v_models, SUM=sum_type)
+svglite(file=paste0("output/rfp_heatmap_3models_EnergySupply_",v_scenario,"_", v_region, "_dr", paste(u_dr*100), "pct.svg"))
+draw_rfp_heatmap_world_byModel(data_plot_diff_rel %>% filter(region == v_region, scenario == v_scenario), v_sectors_energysupply, v_models, SUM="TOTAL")
 dev.off()
 
 #-- Energy Demand sectors ------------------------------------------------------
 v_sectors  <- rev(c("End-Use|Residential and Commercial", "End-Use|Industry", "End-Use|Industry|Cement", "End-Use|Industry|Chemicals", "End-Use|Industry|Steel", "End-Use|Industry|other", "End-Use|Transportation"))
 
-draw_rfp_heatmap_world_diff_abs_byModel(data_plot_diff_abs %>% filter(region == v_region, scenario == v_scenario), v_sectors_energydemand, v_models, SUM=sum_type)
+draw_rfp_heatmap_world_diff_abs_byModel(data_plot_diff_abs %>% filter(region == v_region, scenario == v_scenario), v_sectors_energydemand, v_models, SUM="TOTAL")
 
-svglite(file=paste0("output/rfp_heatmap_3models_EnergyDemand_",v_scenario,"_", v_region, "_dr", paste(dr*100), "pct.svg"))
-draw_rfp_heatmap_world_diff_abs_byModel(data_plot_diff_abs %>% filter(region == v_region, scenario == v_scenario), v_sectors_energydemand, v_models, SUM=sum_type)
+svglite(file=paste0("output/rfp_heatmap_3models_EnergyDemand_",v_scenario,"_", v_region, "_dr", paste(u_dr*100), "pct.svg"))
+draw_rfp_heatmap_world_diff_abs_byModel(data_plot_diff_abs %>% filter(region == v_region, scenario == v_scenario), v_sectors_energydemand, v_models, SUM="TOTAL")
 dev.off()
 
-svglite(file=paste0("output/legend_rfp_heatmap_3models_EnergyDemand_",v_scenario,"_", v_region, "_dr", paste(dr*100), "pct.svg"))
+svglite(file=paste0("output/legend_rfp_heatmap_3models_EnergyDemand_",v_scenario,"_", v_region, "_dr", paste(u_dr*100), "pct.svg"))
 draw_rfp_heatmap_legend(c(-1000000, -20, -10, -5, -2.5, -1, 0, 1, 2.5, 5, 10, 20, 1000000), 
                         c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061"))
 dev.off()
@@ -50,26 +50,26 @@ v_newregionname <- "China"
 draw_rfp_heatmap_region_byModel(data_plot_diff_rel %>% 
                                   filter(region %in% v_region, scenario == v_scenario) %>% 
                                   mutate(region = v_newregionname), 
-                                v_sectors_energysupply, v_newregionname, v_models, SUM=sum_type)
+                                v_sectors_energysupply, v_newregionname, v_models, SUM="TOTAL")
 
-svglite(file=paste0("output/rfp_heatmap_3models_EnergySupply_",v_scenario,"_", gsub("'| ", "", v_newregionname), "_dr", paste(dr*100), "pct.svg"))
+svglite(file=paste0("output/rfp_heatmap_3models_EnergySupply_",v_scenario,"_", gsub("'| ", "", v_newregionname), "_dr", paste(u_dr*100), "pct.svg"))
 draw_rfp_heatmap_region_byModel(data_plot_diff_rel %>% 
                                   filter(region %in% v_region, scenario == v_scenario) %>% 
                                   mutate(region = v_newregionname), 
-                                v_sectors_energysupply, v_newregionname, v_models, SUM=sum_type)
+                                v_sectors_energysupply, v_newregionname, v_models, SUM="TOTAL")
 dev.off()
 
 #-- Energy Demand sectors ------------------------------------------------------
 draw_rfp_heatmap_region_diff_abs_byModel(data_plot_diff_abs %>%
                                            filter(region %in% v_region, scenario == v_scenario) %>% 
                                            mutate(region = v_newregionname), 
-                                         v_sectors_energydemand, v_newregionname, v_models, SUM=sum_type)
+                                         v_sectors_energydemand, v_newregionname, v_models, SUM="TOTAL")
 
-svglite(file=paste0("output/rfp_heatmap_3models_EnergyDemand_",v_scenario,"_", gsub("'| ", "", v_newregionname), "_dr", paste(dr*100), "pct.svg"))
+svglite(file=paste0("output/rfp_heatmap_3models_EnergyDemand_",v_scenario,"_", gsub("'| ", "", v_newregionname), "_dr", paste(u_dr*100), "pct.svg"))
 draw_rfp_heatmap_region_diff_abs_byModel(data_plot_diff_abs %>%
                                            filter(region %in% v_region, scenario == v_scenario) %>% 
                                            mutate(region = v_newregionname), 
-                                         v_sectors_energydemand, v_newregionname, v_models, SUM=sum_type)
+                                         v_sectors_energydemand, v_newregionname, v_models, SUM="TOTAL")
 dev.off()
 
 
@@ -84,26 +84,26 @@ v_newregionname <- "EU"
 draw_rfp_heatmap_region_byModel(data_plot_diff_rel %>% 
                                   filter(region %in% v_region, scenario == v_scenario) %>% 
                                   mutate(region = v_newregionname), 
-                                v_sectors_energysupply, v_newregionname, v_models, SUM=sum_type)
+                                v_sectors_energysupply, v_newregionname, v_models, SUM="TOTAL")
 
-svglite(file=paste0("output/rfp_heatmap_3models_EnergySupply_",v_scenario,"_", gsub("'| ", "", v_newregionname), "_dr", paste(dr*100), "pct.svg"))
+svglite(file=paste0("output/rfp_heatmap_3models_EnergySupply_",v_scenario,"_", gsub("'| ", "", v_newregionname), "_dr", paste(u_dr*100), "pct.svg"))
 draw_rfp_heatmap_region_byModel(data_plot_diff_rel %>% 
                                   filter(region %in% v_region, scenario == v_scenario) %>% 
                                   mutate(region = v_newregionname), 
-                                v_sectors_energysupply, v_newregionname, v_models, SUM=sum_type)
+                                v_sectors_energysupply, v_newregionname, v_models, SUM="TOTAL")
 dev.off()
 
 #-- Energy Demand sectors ------------------------------------------------------
 draw_rfp_heatmap_region_diff_abs_byModel(data_plot_diff_abs %>%
                                            filter(region %in% v_region, scenario == v_scenario) %>% 
                                            mutate(region = v_newregionname), 
-                                         v_sectors_energydemand, v_newregionname, v_models, SUM=sum_type)
+                                         v_sectors_energydemand, v_newregionname, v_models, SUM="TOTAL")
 
-svglite(file=paste0("output/rfp_heatmap_3models_EnergyDemand_",v_scenario,"_", gsub("'| ", "", v_newregionname), "_dr", paste(dr*100), "pct.svg"))
+svglite(file=paste0("output/rfp_heatmap_3models_EnergyDemand_",v_scenario,"_", gsub("'| ", "", v_newregionname), "_dr", paste(u_dr*100), "pct.svg"))
 draw_rfp_heatmap_region_diff_abs_byModel(data_plot_diff_abs %>%
                                            filter(region %in% v_region, scenario == v_scenario) %>% 
                                            mutate(region = v_newregionname), 
-                                         v_sectors_energydemand, v_newregionname, v_models, SUM=sum_type)
+                                         v_sectors_energydemand, v_newregionname, v_models, SUM="TOTAL")
 dev.off()
 
 
@@ -117,26 +117,26 @@ v_newregionname <- "India"
 draw_rfp_heatmap_region_byModel(data_plot_diff_rel %>% 
                                   filter(region %in% v_region, scenario == v_scenario) %>% 
                                   mutate(region = v_newregionname), 
-                                v_sectors_energysupply, v_newregionname, v_models, SUM=sum_type)
+                                v_sectors_energysupply, v_newregionname, v_models, SUM="TOTAL")
 
-svglite(file=paste0("output/rfp_heatmap_3models_EnergySupply_",v_scenario,"_", gsub("'| ", "", v_newregionname), "_dr", paste(dr*100), "pct.svg"))
+svglite(file=paste0("output/rfp_heatmap_3models_EnergySupply_",v_scenario,"_", gsub("'| ", "", v_newregionname), "_dr", paste(u_dr*100), "pct.svg"))
 draw_rfp_heatmap_region_byModel(data_plot_diff_rel %>% 
                                   filter(region %in% v_region, scenario == v_scenario) %>% 
                                   mutate(region = v_newregionname), 
-                                v_sectors_energysupply, v_newregionname, v_models, SUM=sum_type)
+                                v_sectors_energysupply, v_newregionname, v_models, SUM="TOTAL")
 dev.off()
 
 #-- Energy Demand sectors ------------------------------------------------------
 draw_rfp_heatmap_region_diff_abs_byModel(data_plot_diff_abs %>%
                                            filter(region %in% v_region, scenario == v_scenario) %>% 
                                            mutate(region = v_newregionname), 
-                                         v_sectors_energydemand, v_newregionname, v_models, SUM=sum_type)
+                                         v_sectors_energydemand, v_newregionname, v_models, SUM="TOTAL")
 
-svglite(file=paste0("output/rfp_heatmap_3models_EnergyDemand_",v_scenario,"_", gsub("'| ", "", v_newregionname), "_dr", paste(dr*100), "pct.svg"))
+svglite(file=paste0("output/rfp_heatmap_3models_EnergyDemand_",v_scenario,"_", gsub("'| ", "", v_newregionname), "_dr", paste(u_dr*100), "pct.svg"))
 draw_rfp_heatmap_region_diff_abs_byModel(data_plot_diff_abs %>%
                                            filter(region %in% v_region, scenario == v_scenario) %>% 
                                            mutate(region = v_newregionname), 
-                                         v_sectors_energydemand, v_newregionname, v_models, SUM=sum_type)
+                                         v_sectors_energydemand, v_newregionname, v_models, SUM="TOTAL")
 dev.off()
 
 
@@ -150,25 +150,25 @@ v_newregionname <- "USA"
 draw_rfp_heatmap_region_byModel(data_plot_diff_rel %>% 
                                   filter(region %in% v_region, scenario == v_scenario) %>% 
                                   mutate(region = v_newregionname), 
-                                v_sectors_energysupply, v_newregionname, v_models, SUM=sum_type)
+                                v_sectors_energysupply, v_newregionname, v_models, SUM="TOTAL")
 
-svglite(file=paste0("output/rfp_heatmap_3models_EnergySupply_",v_scenario,"_", gsub("'| ", "", v_newregionname), "_dr", paste(dr*100), "pct.svg"))
+svglite(file=paste0("output/rfp_heatmap_3models_EnergySupply_",v_scenario,"_", gsub("'| ", "", v_newregionname), "_dr", paste(u_dr*100), "pct.svg"))
 draw_rfp_heatmap_region_byModel(data_plot_diff_rel %>% 
                                   filter(region %in% v_region, scenario == v_scenario) %>% 
                                   mutate(region = v_newregionname), 
-                                v_sectors_energysupply, v_newregionname, v_models, SUM=sum_type)
+                                v_sectors_energysupply, v_newregionname, v_models, SUM="TOTAL")
 dev.off()
 
 #-- Energy Demand sectors ------------------------------------------------------
 draw_rfp_heatmap_region_diff_abs_byModel(data_plot_diff_abs %>%
                                            filter(region %in% v_region, scenario == v_scenario) %>% 
                                            mutate(region = v_newregionname), 
-                                         v_sectors_energydemand, v_newregionname, v_models, SUM=sum_type)
+                                         v_sectors_energydemand, v_newregionname, v_models, SUM="TOTAL")
 
-svglite(file=paste0("output/rfp_heatmap_3models_EnergyDemand_",v_scenario,"_", gsub("'| ", "", v_newregionname), "_dr", paste(dr*100), "pct.svg"))
+svglite(file=paste0("output/rfp_heatmap_3models_EnergyDemand_",v_scenario,"_", gsub("'| ", "", v_newregionname), "_dr", paste(u_dr*100), "pct.svg"))
 draw_rfp_heatmap_region_diff_abs_byModel(data_plot_diff_abs %>%
                                            filter(region %in% v_region, scenario == v_scenario) %>% 
                                            mutate(region = v_newregionname), 
-                                         v_sectors_energydemand, v_newregionname, v_models, SUM=sum_type)
+                                         v_sectors_energydemand, v_newregionname, v_models, SUM="TOTAL")
 dev.off()
 

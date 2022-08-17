@@ -1,7 +1,7 @@
 ---
 title: "RFP variable availability"
 author: "Hilaire et al. (2022)"
-date: "04-08-2022"
+date: "09-08-2022"
 output: 
   html_document:
     toc: true
@@ -79,9 +79,7 @@ format_table_summary <- function(i_table, i_sector_escaped, i_check, i_equations
 source("../functions/rfp.R")
 source("../functions/tool_functions.R")
 source("../functions/check_data_availability.R")
-#load("../data/ngfs/load/data_ngfs2.RData")
-#load("../data/data_ngfs2_20220416.RData")
-load("../data/data_ngfs2_20220804.RData")
+load("../data/data_ngfs2.RData")
 
 scen_baseline <- c(
   "Current Policies"                            = NA,

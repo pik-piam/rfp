@@ -14,7 +14,6 @@ u_dr       <- 0.05
 u_region   <- "World"
 u_models   <- c("GCAM5.3_NGFS", "MESSAGEix-GLOBIOM 1.1", "REMIND-MAgPIE 2.1-4.2") 
 u_scenario <- "Net Zero 2050"
-u_sum_type <- "TOTAL"
 #-------------------------------------------------------------
 
 v_sector <- c("Energy Supply|Production|Coal", 
@@ -27,17 +26,16 @@ plots <-  list()
 for (ksec in v_sector) {
   plots[[paste0("pathway_", ksec)]] <- plot_rfp_pathways_wtotal(data_rfp_abs_diff %>% filter(grepl(u_model, model)), 
                     ksec, 
-                    u_scenario, u_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE, TOTAL=FALSE) + 
+                    u_scenario, u_region, HORIZON=u_horizon, DISCOUNT=u_dr, PRINT=FALSE, TOTAL=TRUE) + 
     ggtitle(paste0(ksec, " - (Disc: 5%)")) +
     theme(axis.text = element_text(size=20), axis.title = element_text(size=20))
 }
 
-#ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"), ncol = 3)
-#ggsave(paste0("output/figure2/rfp_pathways_3sectors.svg"), width = 20, height = 6)
+ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"), ncol = 3)
+ggsave(paste0("output/figure2/rfp_pathways_3sectors.svg"), width = 20, height = 6)
 
 
 # Cumulative bar plot
-#plots <-  list()
 for (ksec in v_sector) {
   tmp <- data_rfp_abs_diff %>% 
     filter(grepl("REMIND", model), region == u_region, scenario == u_scenario, period >= 2020, period <= 2050, sector == ksec) %>% 
@@ -49,8 +47,8 @@ for (ksec in v_sector) {
     ) %>% 
     ungroup()
   
-  plots[[paste0("cumdisc_", ksec)]] <- ggplot(tmp %>% filter(!grepl("Total", rfp)) %>% mutate(rfp = factor(gsub("Diagnostics\\|RFP\\|", "", rfp), 
-                                                                      levels=c("Direct emissions cost", "Indirect cost", "Low-carbon capital expenditure", "Revenue", "Overall"),
+  plots[[paste0("cumdisc_", ksec)]] <- ggplot(tmp %>% mutate(rfp = factor(gsub("Diagnostics\\|RFP\\|", "", rfp), 
+                                                                      levels=c("Direct emissions cost", "Indirect cost", "Low-carbon capital expenditure", "Revenue", "Total"),
                                                                       ordered = TRUE))) + 
     geom_col(aes(x=rfp, y=diff_abs, fill=rfp)) +
     geom_segment(aes(x=0.5, xend=5.5, y=0, yend=0)) +
@@ -60,10 +58,9 @@ for (ksec in v_sector) {
                          "Indirect cost" = RColorBrewer::brewer.pal(4, "Set1")[2],
                          "Low-carbon capital expenditure" = RColorBrewer::brewer.pal(4, "Set1")[3],
                          "Revenue" = RColorBrewer::brewer.pal(4, "Set1")[4],
-                         "Total" = "#000000",
-                         "Overall" = "#666666")) +
+                         "Total" = "#000000")) +
     ylab("[trillion US$]") + xlab("") +
-    scale_x_discrete(breaks = c("Direct emissions cost", "Indirect cost", "Low-carbon capital expenditure", "Revenue", "Overall"), labels = c("DEC", "IC", "LCE", "Rev", "Total")) +
+    scale_x_discrete(breaks = c("Direct emissions cost", "Indirect cost", "Low-carbon capital expenditure", "Revenue", "Total"), labels = c("DEC", "IC", "LCE", "Rev", "Total")) +
     theme_bw() +
     theme(legend.position = "bottom") +
     theme(axis.text = element_text(size=20), axis.title = element_text(size=20))
@@ -79,17 +76,17 @@ ggsave(paste0("output/figure2/rfp_PathwaysAndCumDiscSum_3sectors.svg"), width = 
 # Heat maps
 svglite::svglite(file=paste("output/figure2/fig2c_heatmap_coalsupply.svg"))
 draw_rfp_heatmap_world(data_plot_diff_rel %>% filter(grepl("REMIND", model), region == u_region, scenario == u_scenario), 
-                       "Energy Supply|Production|Coal", u_scenario, SUM = "OVERALL")
+                       "Energy Supply|Production|Coal", u_scenario, SUM = "TOTAL")
 dev.off()
 
 svglite::svglite(file=paste("output/figure2/fig2c_heatmap_coalutilities.svg"))
 draw_rfp_heatmap_world(data_plot_diff_rel %>% filter(grepl("REMIND", model), region == u_region, scenario == u_scenario), 
-                       "Energy Supply|Electric Utilities|Coal", u_scenario, SUM = "OVERALL")
+                       "Energy Supply|Electric Utilities|Coal", u_scenario, SUM = "TOTAL")
 dev.off()
 
 svglite::svglite(file=paste("output/figure2/fig2c_heatmap_solarpv.svg"))
 draw_rfp_heatmap_world(data_plot_diff_rel %>% filter(grepl("REMIND", model), region == u_region, scenario == u_scenario), 
-                       "Energy Supply|Electric Utilities|Non-Biomass Renewables|Solar PV", u_scenario, SUM = "OVERALL")
+                       "Energy Supply|Electric Utilities|Non-Biomass Renewables|Solar PV", u_scenario, SUM = "TOTAL")
 dev.off()
 
 

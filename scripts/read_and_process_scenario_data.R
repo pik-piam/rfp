@@ -11,6 +11,10 @@ scen_baseline <- c(
   "Divergent Net Zero"                          = "Current Policies"
 )
 
+scen_baseline <- data.frame(scen_baseline) %>% 
+  rownames_to_column()
+names(scen_baseline) <- c("scenario", "baseline")
+
 #-- Get regional mapping -------------------------------------------------------
 mapping_region_ngfs <- read.csv2("data/ngfs/regional_mapping_ngfs.csv")
 

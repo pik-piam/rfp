@@ -13,7 +13,7 @@ output:
 u_dr       <- 0.05
 u_horizon  <- 2050
 u_scenario <- "Net Zero 2050"
-u_sum_type <- "OVERALL"
+u_sum_type <- "TOTAL"
 u_models   <- c("GCAM5.3_NGFS", "MESSAGEix-GLOBIOM 1.1", "REMIND-MAgPIE 2.1-4.2") 
 u_sectors_energysupply  <- rev(c("Energy Supply|Production|Oil", "Energy Supply|Production|Gas", 
                                  "Energy Supply|Production|Coal",  
@@ -35,7 +35,8 @@ u_sectors_h2plants  <- rev(c("Energy Supply|Hydrogen Plants|Coal", "Energy Suppl
 
 u_sectors_energydemand  <- rev(c("End-Use|Residential and Commercial", "End-Use|Industry", 
                                  "End-Use|Industry|Cement", "End-Use|Industry|Chemicals", 
-                                 "End-Use|Industry|Steel", "End-Use|Transportation"))
+                                 "End-Use|Industry|Steel",
+                                 "End-Use|Industry|Other", "End-Use|Transportation"))
 
 
 ```
@@ -54,10 +55,10 @@ source("../functions/rfp.R")
 source("../functions/plotting_functions.R")
 
 # Load computed RFPs
-load("../data/data_rfp_step2_20220804.RData")
+load("../data/data_rfp_step2.RData")
 ```
 
-This report is generated automatically from the R-Markdown file rfp_heatmap_report_doc_final.Rmd.
+This report is generated automatically from the R-Markdown file rfp_report_heatmap_docx.Rmd.
 
 G is for GCAM, MG for MESSAGEix-GLOBIOM, RM for REMIND-MAgPIE
 

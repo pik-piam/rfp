@@ -1,7 +1,7 @@
 ---
 title: "RFP variable availability"
 author: "Hilaire et al. (2022)"
-date: "04-08-2022"
+date: "09-08-2022"
 output: 
   word_document:
     toc: true

@@ -672,18 +672,19 @@ plot_rfp_pathways_wtotal <- function(i_data, i_sector, i_scenario, i_region, HOR
                 mutate(sector = gsub("Energy Supply\\|", "", sector)) %>% 
                 mutate(diff_abs = diff_abs*1/(1+DISCOUNT)^(period - 2020)))
   if (TOTAL) { 
-    p <- p + geom_line(aes(x=period, y=diff_abs, color=rfp), 
-                       lwd=1.5,
-                       lty=3,
-                       data=i_data %>% 
-                         filter(period >= 2020, period <= HORIZON, 
-                                rfp == "Diagnostics|RFP|Total",
-                                sector == i_sector,
-                                scenario == i_scenario,
-                                region == i_region) %>% 
-                         mutate(rfp = gsub("Diagnostics\\|RFP\\|", "", rfp)) %>% 
-                         mutate(sector = gsub("Energy Supply\\|", "", sector)) %>% 
-                         mutate(diff_abs = diff_abs*1/(1+DISCOUNT)^(period - 2020))) +
+    p <- p + 
+      geom_line(aes(x=period, y=diff_abs, color=rfp), 
+                lwd=1.5,
+                lty=3,
+                data=i_data %>% 
+                  filter(period >= 2020, period <= HORIZON, 
+                         rfp == "Diagnostics|RFP|Total",
+                         sector == i_sector,
+                         scenario == i_scenario,
+                         region == i_region) %>% 
+                  mutate(rfp = gsub("Diagnostics\\|RFP\\|", "", rfp)) %>% 
+                  mutate(sector = gsub("Energy Supply\\|", "", sector)) %>% 
+                  mutate(diff_abs = diff_abs*1/(1+DISCOUNT)^(period - 2020))) +
       geom_point(aes(x=period, y=diff_abs),
                  color = "white",
                  pch=16, size=3,

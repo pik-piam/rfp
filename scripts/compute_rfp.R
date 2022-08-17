@@ -14,7 +14,7 @@ data_rfp <- bind_rows(
   compute_rfp(data_rfp_input %>% filter(grepl("GCAM", model),    !grepl("REMIND|MESSAGE", region)), equations, assumptions, mapping_region_ngfs),
   compute_rfp(data_rfp_input %>% filter(grepl("MESSAGE", model), !grepl("GCAM|REMIND", region)),    equations, assumptions, mapping_region_ngfs),
   compute_rfp(data_rfp_input %>% filter(grepl("REMIND", model),  !grepl("GCAM|MESSAGE", region)),   equations, assumptions, mapping_region_ngfs)) %>% 
-  left_join(data.frame(scenario = names(scen_baseline), baseline = paste(scen_baseline)),
+  left_join(scen_baseline,
             by="scenario")
 
 # For transformation technologies, recalculate global indirect cost and revenues by 
@@ -366,27 +366,24 @@ data_rfp_extended <- data_rfp %>%
   mutate(rfp = ifelse(grepl("Indirect cost", variable),                  "Diagnostics|RFP|Indirect cost", rfp)) %>% 
   mutate(rfp = ifelse(grepl("Low-carbon capital expenditure", variable), "Diagnostics|RFP|Low-carbon capital expenditure", rfp)) %>% 
   mutate(rfp = ifelse(grepl("Revenue", variable),                        "Diagnostics|RFP|Revenue", rfp)) %>% 
-  mutate(rfp = ifelse(grepl("Total Costs", variable),                    "Diagnostics|RFP|Total Costs", rfp)) %>% 
   mutate(sector = substr(variable, nchar(rfp)+2, nchar(variable))) %>% 
   select(-variable) %>% 
   pivot_wider(names_from = "rfp", values_from = "value") %>% 
-  mutate(`Diagnostics|RFP|Total` = NAto0(`Diagnostics|RFP|Direct emissions cost`) + NAto0(`Diagnostics|RFP|Indirect cost`) +
-           + NAto0(`Diagnostics|RFP|Revenue`)) %>% 
-  mutate(`Diagnostics|RFP|Overall` = NAto0(`Diagnostics|RFP|Direct emissions cost`) + NAto0(`Diagnostics|RFP|Indirect cost`) +
-           NAto0(`Diagnostics|RFP|Low-carbon capital expenditure`) + NAto0(`Diagnostics|RFP|Revenue`)) %>% 
+  mutate(`Diagnostics|RFP|Total` = NAto0(`Diagnostics|RFP|Direct emissions cost`) + 
+                                   NAto0(`Diagnostics|RFP|Indirect cost`) +
+                                   NAto0(`Diagnostics|RFP|Low-carbon capital expenditure`) + 
+                                   NAto0(`Diagnostics|RFP|Revenue`)) %>% 
   pivot_longer(names_to = "rfp", values_to = "value", cols = c("Diagnostics|RFP|Direct emissions cost",
                                                                "Diagnostics|RFP|Indirect cost",
                                                                "Diagnostics|RFP|Low-carbon capital expenditure",
                                                                "Diagnostics|RFP|Revenue",
-                                                               "Diagnostics|RFP|Total",
-                                                               "Diagnostics|RFP|Overall")) 
+                                                               "Diagnostics|RFP|Total")) 
 
 data_rfp_abs_diff <- data_rfp_extended %>% 
   left_join(data_rfp_extended %>% 
               filter(scenario %in% scenario_baseline) %>% 
-              select(-baseline) %>% 
-              rename(value_base=value),
-            by=c("model"="model", "baseline"="scenario", "region"="region", "rfp"="rfp", "sector"="sector", "period"="period")) %>% 
+              select(-scenario, -baseline) %>% 
+              rename(value_base=value)) %>% 
   mutate(diff_abs=(value-value_base)*1e-3) %>% 
   select(model, scenario, region, rfp, sector, period, value, value_base, diff_abs, baseline) %>% 
   mutate(scenario = factor(scenario, 
@@ -396,7 +393,7 @@ data_rfp_abs_diff <- data_rfp_extended %>%
 data_rfp_npv <- data_rfp_extended %>% 
   left_join(data_rfp_extended %>% 
               filter(scenario %in% scenario_baseline) %>% 
-              select(-baseline) %>% 
+              select(-baseline, scenario) %>% 
               rename(value_base=value),
             by=c("model"="model", "baseline"="scenario", "region"="region", "rfp"="rfp", "sector"="sector", "period"="period", "unit"="unit")) %>% 
   rename(value_scen=value) %>%

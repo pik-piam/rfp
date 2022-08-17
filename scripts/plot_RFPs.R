@@ -61,7 +61,7 @@ for (kmodel in v_models) {
         ggtitle(paste0(ksec, " - (Disc: 5%)"))
     }
     ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
-    ggsave(paste0("output/rfp_pathways_", kseccat, "_", v_modelname, "_", u_scenario, "_", v_region, "_", round(u_dr*100, digits = 0), "pct.png"))
+    ggsave(paste0("output/rfp_pathways_", kseccat, "_", v_modelname, "_", u_scenario, "_", u_region, "_", round(u_dr*100, digits = 0), "pct.png"))
   }
 }
 

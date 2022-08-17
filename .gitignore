@@ -1,0 +1,6 @@
+.Rprofile
+.Rhistory
+.Rproj.user
+output
+renv
+renv.lock
