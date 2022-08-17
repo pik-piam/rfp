@@ -86,7 +86,6 @@ draw_single_rfp_heatmap_diff_abs <- function(data_rfp, x0, y0, r=1, N=100, SUM="
     
     if(!is.null(CONTOUR)) {
       polygon(circleData$X, circleData$Y, col=colour, border = CONTOUR)
-      #lines(circleData$X, circleData$Y, col=CONTOUR)
     } else {
       polygon(circleData$X, circleData$Y, col=colour, border = NA)
     }
@@ -98,9 +97,6 @@ draw_single_rfp_heatmap_diff_abs <- function(data_rfp, x0, y0, r=1, N=100, SUM="
   if (!is.na(data_rfp$value[which(data_rfp$rfp == "Indirect cost")])) {
     plot_circle(x0, y0, r, 0, pi/2,     colour=data_rfp$colour[which(data_rfp$rfp == "Indirect cost")],   CONTOUR="white")
   }
-  # if (!is.na(data_rfp$value[which(data_rfp$rfp == "Revenue")])) {
-  #   plot_circle(x0, y0, r, pi, pi*3/2, colour=data_rfp$colour[which(data_rfp$rfp == "Revenue")], CONTOUR="white")
-  # }
   if (!is.na(data_rfp$value[which(data_rfp$rfp == "Low-carbon capital expenditure")])) {
     plot_circle(x0, y0, r, pi*3/2, 2*pi,   colour=data_rfp$colour[which(data_rfp$rfp == "Low-carbon capital expenditure")],  CONTOUR="white")
   }
@@ -136,10 +132,7 @@ draw_rfp_heatmap_world <- function(i_data, i_sector, i_scenario, SUM="TOTAL") {
   colfunc_wg <- colorRampPalette(c("#ffffff", "#4daf4a"))
   colours     <- c(colfunc_rw(ncol), colfunc_wg(ncol))
   
-  abs_max <- 100 #max(abs(v_data$value), na.rm = TRUE)
-  #values  <- c(seq(-abs_max, 0, length.out = ncol+1), seq(0, abs_max, length.out = ncol+1)[2:(ncol+1)]) 
-  # colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
-  # values  <- c(-1000000, -500, -100, -50, -25, -10, 0, 10, 25, 50, 100, 500, 1000000)
+  abs_max <- 100 
   colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
   values <- c(-1000000, -100, -75, -50, -25, -10, 0, 10, 25, 50, 75, 100, 1000000)
   
@@ -194,10 +187,7 @@ draw_rfp_heatmap_world_byModel <- function(i_data, i_sector, i_model, SUM="TOTAL
   colfunc_wg <- colorRampPalette(c("#ffffff", "#4daf4a"))
   colours     <- c(colfunc_rw(ncol), colfunc_wg(ncol))
   
-  abs_max <- 100 #max(abs(v_data$value), na.rm = TRUE)
-  #values  <- c(seq(-abs_max, 0, length.out = ncol+1), seq(0, abs_max, length.out = ncol+1)[2:(ncol+1)]) 
-  # colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
-  # values  <- c(-1000000, -500, -100, -50, -25, -10, 0, 10, 25, 50, 100, 500, 1000000)
+  abs_max <- 100 
   colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
   values <- c(-1000000, -100, -75, -50, -25, -10, 0, 10, 25, 50, 75, 100, 1000000)
   
@@ -249,10 +239,7 @@ draw_rfp_heatmap_world_diff_abs <- function(i_data, i_sector, i_scenario, SUM="T
   colfunc_wg <- colorRampPalette(c("#ffffff", "#4daf4a"))
   colours    <- c(colfunc_rw(ncol), colfunc_wg(ncol))
   
-  abs_max <- 100 #max(abs(v_data$value), na.rm = TRUE)
-  #values  <- c(seq(-abs_max, 0, length.out = ncol+1), seq(0, abs_max, length.out = ncol+1)[2:(ncol+1)]) 
-  # colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
-  # values  <- c(-1000000, -500, -100, -50, -25, -10, 0, 10, 25, 50, 100, 500, 1000000)
+  abs_max <- 100 
   colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
   values  <- c(-1000000, -100, -75, -50, -25, -10, 0, 10, 25, 50, 75, 100, 1000000)
   
@@ -305,12 +292,8 @@ draw_rfp_heatmap_world_diff_abs_byModel <- function(i_data, i_sector, i_model, S
   colfunc_wg <- colorRampPalette(c("#ffffff", "#4daf4a"))
   colours    <- c(colfunc_rw(ncol), colfunc_wg(ncol))
   
-  abs_max <- 100 #max(abs(v_data$value), na.rm = TRUE)
-  #values  <- c(seq(-abs_max, 0, length.out = ncol+1), seq(0, abs_max, length.out = ncol+1)[2:(ncol+1)]) 
-  # colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
-  # values  <- c(-1000000, -500, -100, -50, -25, -10, 0, 10, 25, 50, 100, 500, 1000000)
+  abs_max <- 100
   colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
-  #values  <- c(-1000000, -100, -75, -50, -25, -10, 0, 10, 25, 50, 75, 100, 1000000)
   values  <- c(-1000000, -50, -25, -10, -5, -1, 0, 1, 5, 10, 25, 50, 1000000)
   
   v_dataplot <- v_data %>% 
@@ -364,10 +347,7 @@ draw_rfp_heatmap_region_byModel <- function(i_data, i_sector, i_region, i_model,
   colfunc_wg <- colorRampPalette(c("#ffffff", "#4daf4a"))
   colours     <- c(colfunc_rw(ncol), colfunc_wg(ncol))
   
-  abs_max <- 100 #max(abs(v_data$value), na.rm = TRUE)
-  #values  <- c(seq(-abs_max, 0, length.out = ncol+1), seq(0, abs_max, length.out = ncol+1)[2:(ncol+1)]) 
-  # colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
-  # values  <- c(-1000000, -500, -100, -50, -25, -10, 0, 10, 25, 50, 100, 500, 1000000)
+  abs_max <- 100 
   colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
   values <- c(-1000000, -100, -75, -50, -25, -10, 0, 10, 25, 50, 75, 100, 1000000)
   
@@ -419,10 +399,7 @@ draw_rfp_heatmap_region_diff_abs_byModel <- function(i_data, i_sector, i_region,
   colfunc_wg <- colorRampPalette(c("#ffffff", "#4daf4a"))
   colours    <- c(colfunc_rw(ncol), colfunc_wg(ncol))
   
-  abs_max <- 100 #max(abs(v_data$value), na.rm = TRUE)
-  #values  <- c(seq(-abs_max, 0, length.out = ncol+1), seq(0, abs_max, length.out = ncol+1)[2:(ncol+1)]) 
-  # colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
-  # values  <- c(-1000000, -500, -100, -50, -25, -10, 0, 10, 25, 50, 100, 500, 1000000)
+  abs_max <- 100 
   colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
   values  <- c(-1000000, -20, -10, -5, -2.5, -1, 0, 1, 2.5, 5, 10, 20, 1000000)
   
@@ -561,19 +538,6 @@ plot_rfp_pathways <- function(i_data, i_sector, i_scenario, i_region, HORIZON=20
                  mutate(rfp = gsub("Diagnostics\\|RFP\\|", "", rfp)) %>% 
                  mutate(sector = gsub("Energy Supply\\|", "", sector)) %>% 
                  mutate(diff_abs = diff_abs*1/(1+DISCOUNT)^(period - 2020))) +
-    geom_line(aes(x=period, y=diff_abs, color=rfp), 
-              lwd=1.4,
-              lty=2,
-              data=i_data %>% 
-                filter(period >= 2020, period <= HORIZON, 
-                       rfp == "Diagnostics|RFP|Overall",
-                       sector == i_sector,
-                       scenario == i_scenario,
-                       region == i_region) %>% 
-                mutate(rfp = gsub("Diagnostics\\|RFP\\|", "", rfp)) %>% 
-                mutate(sector = gsub("Energy Supply\\|", "", sector)) %>% 
-                mutate(diff_abs = diff_abs*1/(1+DISCOUNT)^(period - 2020))) +
-    #facet_wrap(sector~scenario, scales = "free_y") +
     xlab("") + ylab("[billion $US]") +
     scale_color_manual(name = "RFP", 
                        values = c(
@@ -581,8 +545,7 @@ plot_rfp_pathways <- function(i_data, i_sector, i_scenario, i_region, HORIZON=20
                          "Indirect cost" = RColorBrewer::brewer.pal(4, "Set1")[2],
                          "Low-carbon capital expenditure" = RColorBrewer::brewer.pal(4, "Set1")[3],
                          "Revenue" = RColorBrewer::brewer.pal(4, "Set1")[4],
-                         "Total" = "#000000",
-                         "Overall" = "#666666")) +
+                         "Total" = "#000000")) +
     coord_cartesian(ylim = c(ymin, ymax), expand = FALSE, clip = "off") +
     theme_minimal() +
     theme(
@@ -724,7 +687,6 @@ plot_rfp_pathways_wtotal <- function(i_data, i_sector, i_scenario, i_region, HOR
                 mutate(rfp = gsub("Diagnostics\\|RFP\\|", "", rfp)) %>% 
                 mutate(sector = gsub("Energy Supply\\|", "", sector)) %>% 
                 mutate(diff_abs = diff_abs*1/(1+DISCOUNT)^(period - 2020))) +
-    #facet_wrap(sector~scenario, scales = "free_y") +
     xlab("") + ylab("[billion $US]") +
     scale_color_manual(name = "RFP", 
                        values = c(
@@ -816,7 +778,6 @@ plot_rfp_pathways_grid <- function(i_data, i_region, HORIZON=2050, DISCOUNT=0.0,
                 mutate(rfp = gsub("Diagnostics\\|RFP\\|", "", rfp)) %>% 
                 mutate(sector = gsub("Energy Supply\\|", "", sector)) %>% 
                 mutate(diff_abs = diff_abs*1/(1+DISCOUNT)^(period - 2020))) +
-    #facet_wrap(sector~scenario, scales = "free_y") +
     xlab("") + ylab("[billion $US]") +
     scale_color_manual(name = "RFP", 
                        values = c(
@@ -863,10 +824,7 @@ draw_rfp_heatmap_regions <- function(i_data, i_sector, i_scenario, SUM=sum_type)
   colfunc_wg <- colorRampPalette(c("#ffffff", "#4daf4a"))
   colours     <- c(colfunc_rw(ncol), colfunc_wg(ncol))
   
-  abs_max <- 100 #max(abs(v_data$value), na.rm = TRUE)
-  #values  <- c(seq(-abs_max, 0, length.out = ncol+1), seq(0, abs_max, length.out = ncol+1)[2:(ncol+1)]) 
-  # colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
-  # values  <- c(-1000000, -500, -100, -50, -25, -10, 0, 10, 25, 50, 100, 500, 1000000)
+  abs_max <- 100 
   colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
   values <- c(-5000, -100, -75, -50, -25, -10, 0, 10, 25, 50, 75, 100, 5000)
   
@@ -940,9 +898,6 @@ draw_rfp_heatmap_world_byModel_forReport <- function(i_data, i_sector, i_model, 
   colours     <- c(colfunc_rw(ncol), colfunc_wg(ncol))
   
   abs_max <- 100 #max(abs(v_data$value), na.rm = TRUE)
-  #values  <- c(seq(-abs_max, 0, length.out = ncol+1), seq(0, abs_max, length.out = ncol+1)[2:(ncol+1)]) 
-  # colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
-  # values  <- c(-1000000, -500, -100, -50, -25, -10, 0, 10, 25, 50, 100, 500, 1000000)
   colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
   values <- c(-1000000, -100, -75, -50, -25, -10, 0, 10, 25, 50, 75, 100, 1000000)
   
@@ -1000,9 +955,6 @@ draw_rfp_heatmap_region_byModel_forReport <- function(i_data, i_sector, i_model,
   colours     <- c(colfunc_rw(ncol), colfunc_wg(ncol))
   
   abs_max <- 100 #max(abs(v_data$value), na.rm = TRUE)
-  #values  <- c(seq(-abs_max, 0, length.out = ncol+1), seq(0, abs_max, length.out = ncol+1)[2:(ncol+1)]) 
-  # colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
-  # values  <- c(-1000000, -500, -100, -50, -25, -10, 0, 10, 25, 50, 100, 500, 1000000)
   colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
   values <- c(-1000000, -100, -75, -50, -25, -10, 0, 10, 25, 50, 75, 100, 1000000)
   
@@ -1061,11 +1013,6 @@ draw_rfp_heatmap_world_diff_abs_byModel_forReport <- function(i_data, i_sector, 
   colours    <- c(colfunc_rw(ncol), colfunc_wg(ncol))
   
   abs_max <- 100 #max(abs(v_data$value), na.rm = TRUE)
-  #values  <- c(seq(-abs_max, 0, length.out = ncol+1), seq(0, abs_max, length.out = ncol+1)[2:(ncol+1)]) 
-  # colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
-  # values  <- c(-1000000, -500, -100, -50, -25, -10, 0, 10, 25, 50, 100, 500, 1000000)
-  # colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
-  # values  <- c(-1000000, -100, -75, -50, -25, -10, 0, 10, 25, 50, 75, 100, 1000000)
   colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
   values  <- c(-1000000, -20, -10, -5, -2.5, -1, 0, 1, 2.5, 5, 10, 20, 1000000)
   
@@ -1127,11 +1074,6 @@ draw_rfp_heatmap_region_diff_abs_byModel_forReport <- function(i_data, i_sector,
   colours    <- c(colfunc_rw(ncol), colfunc_wg(ncol))
   
   abs_max <- 100 #max(abs(v_data$value), na.rm = TRUE)
-  #values  <- c(seq(-abs_max, 0, length.out = ncol+1), seq(0, abs_max, length.out = ncol+1)[2:(ncol+1)]) 
-  # colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
-  # values  <- c(-1000000, -500, -100, -50, -25, -10, 0, 10, 25, 50, 100, 500, 1000000)
-  # colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
-  # values  <- SCALE #c(-1000000, -100, -75, -50, -25, -10, 0, 10, 25, 50, 75, 100, 1000000)
   colours <- c("#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061")
   values  <- c(-1000000, -20, -10, -5, -2.5, -1, 0, 1, 2.5, 5, 10, 20, 1000000)
   

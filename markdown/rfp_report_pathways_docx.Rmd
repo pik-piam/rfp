@@ -119,6 +119,7 @@ for (ksec in section_variables) {
 ggarrange(plotlist=plots, common.legend = TRUE, legend = "bottom", align = c("hv"))
 ```
 
+
 ## Liquids fuels
 ```{r}
 section_variables <- c("Energy Supply|Refineries|Oil", "Energy Supply|Fischer-Tropsch Process|Biomass")
