@@ -30,7 +30,7 @@ source("../functions/plotting_functions.R")
 load("../data/data_rfp_step2.RData")
 ```
 
-This report is generated automatically from the R-Markdown file rfp_report__doc_pathways_docx.Rmd.
+This report is generated automatically from the R-Markdown file rfp_report_pathways_docx.Rmd.
 
 # World
 ```{r}
